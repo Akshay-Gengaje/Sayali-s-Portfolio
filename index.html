@@ -1,0 +1,1934 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sayali Gengaje — Commercial Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ─── TOKENS ─────────────────────────────────────────────────── */
+      :root {
+        --accent: #00d4aa;
+        --accent2: #ff6b35;
+        --font-display: "Poppins", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --radius: 12px;
+        --ease: cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      [data-theme="dark"] {
+        --bg: #0a0a0f;
+        --bg2: #111118;
+        --bg3: #1a1a24;
+        --border: rgba(255, 255, 255, 0.07);
+        --text: #f0f0f5;
+        --text2: #8888aa;
+        --text3: #555570;
+        --card: #13131c;
+        --glow: rgba(0, 212, 170, 0.15);
+      }
+
+      [data-theme="light"] {
+        --bg: #f5f5f0;
+        --bg2: #efefea;
+        --bg3: #e5e5de;
+        --border: rgba(0, 0, 0, 0.08);
+        --text: #0f0f18;
+        --text2: #44445a;
+        --text3: #888899;
+        --card: #fafaf7;
+        --glow: rgba(0, 212, 170, 0.12);
+      }
+
+      /* ─── RESET & BASE ───────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        font-size: 16px;
+        line-height: 1.65;
+        transition:
+          background 0.4s var(--ease),
+          color 0.4s var(--ease);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      /* ─── NOISE TEXTURE ──────────────────────────────────────────── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.4;
+      }
+
+      /* ─── SCROLLBAR ──────────────────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg2);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 2px;
+      }
+
+      /* ─── NAV ────────────────────────────────────────────────────── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.1rem 2.5rem;
+        background: rgba(10, 10, 15, 0.7);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        transition: background 0.4s;
+      }
+
+      [data-theme="light"] nav {
+        background: rgba(245, 245, 240, 0.8);
+      }
+
+      .nav-logo {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 2.5rem;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-logo span {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text2);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transition: transform 0.3s var(--ease);
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .theme-toggle {
+        width: 40px;
+        height: 22px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+        cursor: pointer;
+        position: relative;
+        transition: background 0.3s;
+        flex-shrink: 0;
+      }
+
+      .theme-toggle::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: var(--accent);
+        border-radius: 50%;
+        transition: transform 0.3s var(--ease);
+      }
+
+      [data-theme="light"] .theme-toggle::after {
+        transform: translateX(18px);
+      }
+
+      .menu-btn {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      .menu-btn span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: 0.3s;
+      }
+
+      /* ─── HERO ───────────────────────────────────────────────────── */
+      #hero {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        align-items: center;
+        padding: 7rem 2.5rem 4rem;
+        gap: 3rem;
+        position: relative;
+        overflow: hidden;
+        max-width: 1300px;
+        margin: 0 auto;
+      }
+
+      .hero-bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--border) 1px, transparent 1px),
+          linear-gradient(90deg, var(--border) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(
+          ellipse 80% 80% at 50% 0%,
+          black 40%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: 10%;
+        right: 5%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, var(--glow), transparent 70%);
+        pointer-events: none;
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+
+        50% {
+          opacity: 1;
+          transform: scale(1.08);
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        justify-self: start;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border: 1px solid rgba(0, 212, 170, 0.3);
+        padding: 0.35rem 0.8rem;
+        border-radius: 99px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.8s var(--ease) both;
+      }
+
+      .hero-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: blink 1.5s ease-in-out infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .hero-name {
+        font-family: JetBrains Mono, dm sans, sans-serif;
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        animation: fadeUp 0.8s 0.1s var(--ease) both;
+      }
+
+      .hero-name .accent {
+        color: var(--accent);
+      }
+
+      .hero-role {
+        font-family: var(--font-mono);
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+        color: var(--text2);
+        margin: 1.2rem 0 1.8rem;
+        animation: fadeUp 0.8s 0.2s var(--ease) both;
+      }
+
+      .hero-desc {
+        font-size: clamp(1.05rem, 2vw, 1.15rem);
+        color: var(--text2);
+        max-width: 480px;
+        line-height: 1.7;
+        animation: fadeUp 0.8s 0.3s var(--ease) both;
+      }
+
+      .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        animation: fadeUp 0.8s 0.4s var(--ease) both;
+      }
+
+      .btn-primary {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 0.75rem 1.8rem;
+        background: var(--accent);
+        color: #0a0a0f;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        letter-spacing: 0.02em;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 212, 170, 0.35);
+      }
+
+      .btn-outline {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.75rem 1.8rem;
+        background: transparent;
+        color: var(--text);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+
+      .btn-outline:hover {
+        border-color: var(--accent);
+        background: var(--glow);
+      }
+
+      .hero-stats {
+        display: flex;
+        gap: 2.5rem;
+        margin-top: 3rem;
+        align-items: flex-start;
+        animation: fadeUp 0.8s 0.5s var(--ease) both;
+      }
+
+      .stat-item {
+      }
+
+      .stat-num {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 0.25rem;
+      }
+
+      /* Hero photo */
+      .hero-visual {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        justify-self: end;
+        width: 100%;
+        animation: fadeUp 0.9s 0.3s var(--ease) both;
+      }
+
+      .photo-frame {
+        position: relative;
+        width: 340px;
+        height: 400px;
+      }
+
+      .photo-frame::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          transparent 60%,
+          var(--accent2)
+        );
+        border-radius: 20px;
+        z-index: 0;
+      }
+
+      .photo-frame img {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 18px;
+        filter: grayscale(10%);
+      }
+
+      .photo-tag {
+        position: absolute;
+        bottom: -16px;
+        right: -16px;
+        z-index: 2;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.8rem 1.2rem;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--accent);
+      }
+
+      .photo-tag strong {
+        display: block;
+        font-size: 1.1rem;
+        font-family: var(--font-display);
+        color: var(--text);
+      }
+
+      .floating-chip {
+        position: absolute;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.8rem 0.9rem;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text2);
+        white-space: nowrap;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .chip1 {
+        top: -15%;
+        left: 20px;
+        animation-delay: 0s;
+      }
+
+      .chip2 {
+        top: 80%;
+        left: -60px;
+        animation-delay: 1s;
+      }
+
+      .chip3 {
+        top: 70%;
+        right: -40px;
+        animation-delay: 0.5s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      /* ─── SECTION BASE ───────────────────────────────────────────── */
+      section {
+        padding: 5rem 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-label {
+        font-family: var(--font-mono);
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
+        color: var(--accent);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+
+      .section-sub {
+        color: var(--text2);
+        max-width: 520px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        line-height: 1.6;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background: var(--border);
+        margin: 0;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.7s var(--ease),
+          transform 0.7s var(--ease);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── SKILLS ─────────────────────────────────────────────────── */
+      #skills {
+        max-width: 1200px;
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.2rem;
+        margin-top: 3rem;
+      }
+
+      .skill-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        transition:
+          border-color 0.3s,
+          transform 0.3s var(--ease),
+          box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .skill-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s var(--ease);
+      }
+
+      .skill-card:hover {
+        border-color: rgba(0, 212, 170, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px var(--glow);
+      }
+
+      .skill-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .skill-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+        width: 44px;
+        height: 44px;
+        background: var(--bg3);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .skill-name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.8rem;
+      }
+
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        padding: 0.2rem 0.6rem;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--text2);
+      }
+
+      /* ─── EXPERIENCE ─────────────────────────────────────────────── */
+      #experience {
+        max-width: 1200px;
+      }
+
+      .exp-timeline {
+        margin-top: 3rem;
+        position: relative;
+      }
+
+      .exp-timeline::before {
+        content: "";
+        position: absolute;
+        left: 16px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--accent), transparent);
+      }
+
+      .exp-item {
+        padding-left: 52px;
+        position: relative;
+        margin-bottom: 2.5rem;
+      }
+
+      .exp-dot {
+        position: absolute;
+        left: 8px;
+        top: 6px;
+        width: 18px;
+        height: 18px;
+        background: var(--bg2);
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        transition: background 0.3s;
+      }
+
+      .exp-item:hover .exp-dot {
+        background: var(--accent);
+      }
+
+      .exp-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.8rem;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .exp-item:hover .exp-card {
+        border-color: rgba(0, 212, 170, 0.25);
+        box-shadow: 0 8px 30px var(--glow);
+      }
+
+      .exp-meta {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.6rem;
+      }
+
+      .exp-role {
+        font-family: var(--font-display);
+        font-size: clamp(1.05rem, 2vw, 1.2rem);
+        font-weight: 700;
+      }
+
+      .exp-period {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--accent);
+        background: rgba(0, 212, 170, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+
+      .exp-company {
+        font-size: 0.88rem;
+        color: var(--text2);
+        margin-bottom: 1rem;
+      }
+
+      .exp-highlights {
+        list-style: none;
+      }
+
+      .exp-highlights li {
+        padding: 0.35rem 0;
+        padding-left: 1.2rem;
+        position: relative;
+        color: var(--text2);
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .exp-highlights li:last-child {
+        border-bottom: none;
+      }
+
+      .exp-highlights li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+        font-size: 0.8rem;
+      }
+
+      .achievement-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        background: rgba(255, 107, 53, 0.1);
+        color: var(--accent2);
+        border: 1px solid rgba(255, 107, 53, 0.25);
+        padding: 0.25rem 0.7rem;
+        border-radius: 99px;
+        margin-top: 0.6rem;
+      }
+
+      /* ─── METRICS ────────────────────────────────────────────────── */
+      .metrics-wrapper {
+        padding: 0 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      #metrics {
+        max-width: 1200px;
+        background: var(--bg2);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        padding: 3.5rem;
+        margin: 0 auto 5rem;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 2rem;
+        margin-top: 2.5rem;
+      }
+
+      .metric-item {
+        text-align: center;
+      }
+
+      .metric-value {
+        font-family: var(--font-display);
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: var(--accent);
+        line-height: 1;
+        position: relative;
+        display: inline-block;
+      }
+
+      .metric-value sup {
+        font-size: 1rem;
+        vertical-align: super;
+      }
+
+      .metric-bar {
+        width: 60px;
+        height: 3px;
+        background: var(--bg3);
+        border-radius: 2px;
+        margin: 0.8rem auto;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .metric-bar-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 2px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 1.2s var(--ease) 0.3s;
+      }
+
+      .metric-item.visible .metric-bar-fill {
+        transform: scaleX(1);
+      }
+
+      .metric-label {
+        font-size: 0.82rem;
+        color: var(--text2);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+      }
+
+      /* ─── TOOLS ──────────────────────────────────────────────────── */
+      #tools {
+        max-width: 1200px;
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-top: 2.5rem;
+      }
+
+      .tool-pill {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          transform 0.2s;
+        cursor: default;
+      }
+
+      .tool-pill:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .tool-logo {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        display: inline-block;
+      }
+
+      .tool-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* ─── EDUCATION & CERTS ──────────────────────────────────────── */
+      #education {
+        max-width: 1200px;
+      }
+
+      .edu-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+      }
+
+      .edu-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.8rem;
+        transition:
+          border-color 0.3s,
+          transform 0.3s;
+      }
+
+      .edu-card:hover {
+        border-color: rgba(0, 212, 170, 0.3);
+        transform: translateY(-3px);
+      }
+
+      .edu-year {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--accent);
+        letter-spacing: 0.08em;
+        margin-bottom: 0.5rem;
+      }
+
+      .edu-degree {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .edu-school {
+        color: var(--text2);
+        font-size: 0.88rem;
+      }
+
+      .certs-list {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .cert-badge {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.4rem 0.8rem;
+        color: var(--text2);
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      .cert-badge:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* ─── CONTACT ────────────────────────────────────────────────── */
+      #contact {
+        max-width: 1200px;
+        text-align: center;
+        padding-bottom: 6rem;
+      }
+
+      .contact-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 4rem 3rem;
+        position: relative;
+        overflow: hidden;
+        margin-top: 3rem;
+      }
+
+      .contact-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 60% 50% at 50% 100%,
+          var(--glow),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .contact-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text2);
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem 1.4rem;
+        transition: all 0.2s;
+      }
+
+      .contact-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .contact-link svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* ─── FOOTER ─────────────────────────────────────────────────── */
+      footer {
+        text-align: center;
+        padding: 1.5rem;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--text3);
+      }
+
+      /* ─── MOBILE ──────────────────────────────────────────────────── */
+      @media (max-width: 900px) {
+        #hero {
+          grid-template-columns: 1fr;
+          padding: 8rem 1.5rem 4rem;
+          text-align: center;
+          gap: 2rem;
+        }
+
+        .hero-content {
+          justify-self: center;
+          text-align: center;
+          max-width: 100%;
+        }
+
+        .hero-desc {
+          margin: 0 auto;
+        }
+
+        .hero-ctas {
+          justify-content: center;
+        }
+
+        .hero-stats {
+          justify-content: center;
+          gap: 1.5rem;
+          width: 100%;
+        }
+
+        .hero-visual {
+          order: -1;
+          justify-self: center;
+        }
+
+        .photo-frame {
+          width: 260px;
+          height: 300px;
+        }
+
+        .chip1,
+        .chip2,
+        .chip3 {
+          display: none;
+        }
+
+        .edu-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics-wrapper {
+          padding: 0 1.5rem;
+        }
+
+        #metrics {
+          padding: 2rem 1.5rem;
+        }
+
+        nav {
+          padding: 1rem 1.5rem;
+        }
+
+        .nav-links {
+          position: fixed;
+          top: 65px;
+          left: 0;
+          right: 0;
+          background: var(--bg2);
+          flex-direction: column;
+          padding: 2rem;
+          gap: 1.5rem;
+          border-bottom: 1px solid var(--border);
+          transform: translateY(-150%);
+          opacity: 0;
+          pointer-events: none;
+          transition:
+            transform 0.4s var(--ease),
+            opacity 0.4s var(--ease);
+        }
+
+        .nav-links.open {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .menu-btn {
+          display: flex;
+          z-index: 101;
+        }
+
+        .menu-btn.open span:nth-child(1) {
+          transform: translateY(7px) rotate(45deg);
+        }
+
+        .menu-btn.open span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .menu-btn.open span:nth-child(3) {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+
+        section {
+          padding: 4rem 1.5rem;
+        }
+
+        .exp-timeline::before {
+          left: 8px;
+        }
+
+        .exp-item {
+          padding-left: 32px;
+        }
+
+        .exp-dot {
+          left: 0px;
+          width: 16px;
+          height: 16px;
+        }
+
+        .exp-card {
+          padding: 1.2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-name {
+          font-size: clamp(2.5rem, 8vw, 3.5rem);
+        }
+
+        .metrics-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .tools-grid {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+
+        .hero-stats {
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-card {
+          padding: 2.5rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAV -->
+    <nav id="navbar">
+      <div class="nav-logo">SG<span>.</span></div>
+      <div class="nav-links" id="navLinks">
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#metrics">Impact</a>
+        <a href="#tools">Tools</a>
+        <a href="#contact">Contact</a>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle theme"
+        ></button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <button
+          class="theme-toggle"
+          id="themeToggleMobile"
+          aria-label="Toggle theme"
+          style="display: none"
+        ></button>
+        <div class="menu-btn" id="menuBtn">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-bg-grid"></div>
+      <div class="hero-glow"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">Available for Senior Roles</div>
+        <h1 class="hero-name">
+          Sayali<br /><span class="accent">Gengaje</span>
+        </h1>
+        <p class="hero-role">
+          // Commercial Analytics · Sales Analytics · IC Design
+        </p>
+        <p class="hero-desc">
+          Result-driven analytics professional with ~4 years turning complex
+          data into decisions that move the needle — from IC operations to Power
+          BI dashboards that leadership actually trusts.
+        </p>
+        <div class="hero-ctas">
+          <a href="mailto:sayali.gengaje@gmail.com" class="btn-primary"
+            >Get in Touch</a
+          >
+          <a href="#experience" class="btn-outline">View Experience</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num" data-count="4">0</div>
+            <div class="stat-label">Years Exp.</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" data-count="100">0</div>
+            <div class="stat-label">Sales Reps IC'd</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" data-count="50">0</div>
+            <div class="stat-label">% Faster Decisions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="photo-frame">
+          <img src="./profile_pic.jpeg" alt="Sayali Gengaje" />
+          <div class="photo-tag">
+            <strong>High-Flier</strong>
+            Award · July 2024
+          </div>
+        </div>
+        <div class="floating-chip chip1">📊 Power BI Expert</div>
+        <div class="floating-chip chip2">🔢 SQL · Snowflake</div>
+        <div class="floating-chip chip3">🚀 99% IC Accuracy</div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SKILLS -->
+    <section id="skills" class="reveal">
+      <div class="section-label">// 01 — Core Competencies</div>
+      <h2 class="section-title">What I Do Best</h2>
+      <p class="section-sub">
+        Bridging analytics, strategy, and business operations to deliver
+        measurable impact.
+      </p>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon">💹</div>
+          <div class="skill-name">Incentive Compensation</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            End-to-end IC operations across multiple business units with 100%
+            payout accuracy.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">IC Design</span
+            ><span class="tag">Payout Calc</span
+            ><span class="tag">Crediting</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">📈</div>
+          <div class="skill-name">Sales Analytics</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            Territory optimization, target-setting frameworks, and salesforce
+            effectiveness strategies.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Targeting</span><span class="tag">HPT Lists</span
+            ><span class="tag">KPIs</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🎨</div>
+          <div class="skill-name">Data Visualization</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            Interactive dashboards that boost decision-making speed by 50% and
+            drive leadership adoption.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Power BI</span><span class="tag">Tableau</span
+            ><span class="tag">Excel</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">⚙️</div>
+          <div class="skill-name">Process Automation</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            Automated IC workflows reducing processing time by 35% and manual
+            errors by 90%.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">SQL Pipelines</span
+            ><span class="tag">Alteryx</span><span class="tag">CI/CD</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🔬</div>
+          <div class="skill-name">Patient Analytics</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            Claims data modeling, switch predictions, and KOL influence analysis
+            for pharma clients.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Claims Data</span
+            ><span class="tag">KOL Analysis</span
+            ><span class="tag">Benchmarking</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🤝</div>
+          <div class="skill-name">Stakeholder Management</div>
+          <p
+            style="font-size: 0.85rem; color: var(--text2); margin-top: 0.4rem"
+          >
+            Direct collaboration with business directors and cross-functional
+            leadership teams.
+          </p>
+          <div class="skill-tags">
+            <span class="tag">Consulting</span><span class="tag">Alignment</span
+            ><span class="tag">Reporting</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="reveal">
+      <div class="section-label">// 02 — Work Experience</div>
+      <h2 class="section-title">Career Journey</h2>
+
+      <div class="exp-timeline">
+        <!-- Novo Nordisk SA II Current -->
+        <div class="exp-item">
+          <div class="exp-dot"></div>
+          <div class="exp-card">
+            <div class="exp-meta">
+              <div class="exp-role">Senior Associate II</div>
+              <div class="exp-period">May 2025 – Present</div>
+            </div>
+            <div class="exp-company">
+              Novo Nordisk · Bangalore (Hybrid) · Diabetes Business Unit
+            </div>
+            <ul class="exp-highlights">
+              <li>
+                Owning end-to-end commercial analytics operations for
+                single-country portfolio, aligning analytics with business
+                strategy.
+              </li>
+              <li>
+                Collaborating with business directors to translate findings into
+                territory alignment and market shift responses.
+              </li>
+              <li>
+                Delivering monthly performance reviews covering sales, activity
+                metrics, and growth drivers.
+              </li>
+              <li>
+                Writing and maintaining complex SQL queries for data management,
+                automation, and ad-hoc analytics.
+              </li>
+              <li>
+                Creating HPT lists to improve field call planning accuracy and
+                targeting precision.
+              </li>
+            </ul>
+            <div>
+              <span class="achievement-pill"
+                >🚀 25% salesforce productivity improvement</span
+              >
+              <span class="achievement-pill">⚡ 40% faster IC turnaround</span>
+              <span class="achievement-pill">📊 35% data adoption boost</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Novo Nordisk SA I -->
+        <div class="exp-item">
+          <div class="exp-dot"></div>
+          <div class="exp-card">
+            <div class="exp-meta">
+              <div class="exp-role">Senior Associate I</div>
+              <div class="exp-period">Apr 2023 – May 2025</div>
+            </div>
+            <div class="exp-company">Novo Nordisk · Bangalore (Hybrid)</div>
+            <ul class="exp-highlights">
+              <li>
+                Designed sales activity plans and target-setting frameworks that
+                enhanced salesforce effectiveness by 20%.
+              </li>
+              <li>
+                Built interactive Power BI dashboards reducing manual reporting
+                by 12 hrs/month and increasing usage by 40%.
+              </li>
+              <li>
+                Championed automation to streamline IC workflow, cutting
+                processing time by 35%, errors by 90%.
+              </li>
+              <li>
+                Coordinated vendor engagements ensuring zero downtime during
+                system upgrades.
+              </li>
+            </ul>
+            <span class="achievement-pill"
+              >🏆 High-Flier Award — July 2024</span
+            >
+          </div>
+        </div>
+
+        <!-- Eversana Analyst -->
+        <div class="exp-item">
+          <div class="exp-dot"></div>
+          <div class="exp-card">
+            <div class="exp-meta">
+              <div class="exp-role">Analyst, Commercial Analytics</div>
+              <div class="exp-period">Dec 2021 – Apr 2023</div>
+            </div>
+            <div class="exp-company">Eversana · Bangalore (Remote)</div>
+            <ul class="exp-highlights">
+              <li>
+                Executed complex IC calculations using SQL across multiple
+                compensation models with >99% payout accuracy.
+              </li>
+              <li>
+                Built client dashboards delivering real-time insights for 120+
+                sales teams, improving decision speed by 45%.
+              </li>
+              <li>
+                Patient analytics via claims data modeling identified ~10K
+                high-impact prescribers.
+              </li>
+              <li>
+                Drove 80% YoY sales growth for a newly launched product through
+                aligned incentives and field activity plans.
+              </li>
+            </ul>
+            <div>
+              <span class="achievement-pill">📈 80% YoY sales growth</span>
+              <span class="achievement-pill">🎯 99%+ payout accuracy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eversana Intern -->
+        <div class="exp-item">
+          <div class="exp-dot"></div>
+          <div class="exp-card">
+            <div class="exp-meta">
+              <div class="exp-role">Business Consulting Intern</div>
+              <div class="exp-period">Oct – Dec 2021</div>
+            </div>
+            <div class="exp-company">Eversana · Bangalore (Remote)</div>
+            <ul class="exp-highlights">
+              <li>
+                Analyzed IC plan structures across product lifecycles and
+                streamlined documentation.
+              </li>
+              <li>
+                Developed QC frameworks reducing data discrepancies by 45%.
+              </li>
+              <li>
+                Contributed to 2 successful client project deliverables within
+                timelines.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRICS -->
+    <div class="metrics-wrapper reveal">
+      <div id="metrics">
+        <div class="section-label">// 03 — Quantified Impact</div>
+        <h2 class="section-title">Numbers That Matter</h2>
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="100">0</span>%
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill"></div>
+            </div>
+            <div class="metric-label">IC Payout Accuracy</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="50">0</span>%
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill"></div>
+            </div>
+            <div class="metric-label">Faster Decisions via BI</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="90">0</span>%
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill"></div>
+            </div>
+            <div class="metric-label">Fewer Manual Errors</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="80">0</span>%
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill"></div>
+            </div>
+            <div class="metric-label">YoY Sales Growth</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="35">0</span>%
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill" style="width: 35%"></div>
+            </div>
+            <div class="metric-label">IC Cycle Time Reduced</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">
+              <span class="count-up" data-target="10">0</span>K
+            </div>
+            <div class="metric-bar">
+              <div class="metric-bar-fill" style="width: 50%"></div>
+            </div>
+            <div class="metric-label">Prescribers Identified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <section id="tools" class="reveal">
+      <div class="section-label">// 04 — Technical Arsenal</div>
+      <h2 class="section-title">Tools & Technologies</h2>
+      <div class="tools-grid">
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+          </svg>
+          SQL
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="2" width="20" height="20" rx="2" fill="#FFB900"/>
+            <text x="12" y="16" text-anchor="middle" fill="black" font-weight="bold" font-size="14">P</text>
+          </svg>
+          Power BI
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" fill="#EA6C4B"/>
+            <text x="12" y="15" text-anchor="middle" fill="white" font-weight="bold" font-size="12">T</text>
+          </svg>
+          Tableau
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#29B5E8"/>
+            <circle cx="12" cy="12" r="3" fill="#29B5E8"/>
+          </svg>
+          Snowflake
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#3776AB"/>
+            <text x="12" y="15" text-anchor="middle" fill="white" font-weight="bold" font-size="12">Py</text>
+          </svg>
+          Python
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="2" width="20" height="20" rx="2" fill="#5B9BD5"/>
+            <text x="12" y="16" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Ax</text>
+          </svg>
+          Alteryx
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10" fill="#00A1EF"/>
+            <path d="M10 14L8 12L9.5 10.5L10 11L13.5 7.5L15 9L10 14Z" fill="white"/>
+          </svg>
+          Salesforce
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="2" width="20" height="20" rx="2" fill="#217346"/>
+            <text x="12" y="16" text-anchor="middle" fill="white" font-weight="bold" font-size="12">XL</text>
+          </svg>
+          Excel
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#FF9800"/>
+          </svg>
+          ETL Pipelines
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="2" y="4" width="8" height="8" fill="#1F7F8C"/>
+            <rect x="14" y="4" width="8" height="8" fill="#1F7F8C"/>
+            <rect x="2" y="16" width="8" height="4" fill="#1F7F8C"/>
+            <rect x="14" y="16" width="8" height="4" fill="#1F7F8C"/>
+          </svg>
+          MDM
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#4CAF50"/>
+          </svg>
+          CI/CD
+        </div>
+        <div class="tool-pill">
+          <svg class="tool-logo" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#9C27B0"/>
+          </svg>
+          Data Validation
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="reveal">
+      <div class="section-label">// 05 — Education & Certifications</div>
+      <h2 class="section-title">Academic Background</h2>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-year">2019 – 2021</div>
+          <div class="edu-degree">MBA — Finance & Marketing</div>
+          <div class="edu-school">Department of Management Studies, PUMBA</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-year">2012 – 2016</div>
+          <div class="edu-degree">
+            B.Tech — Electronics & Telecom Engineering
+          </div>
+          <div class="edu-school">Vishwakarma Institute of Technology</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2.5rem">
+        <div class="section-label" style="margin-bottom: 0.8rem">
+          // Certifications
+        </div>
+        <div class="certs-list">
+          <span class="cert-badge">Alteryx Bootcamp — Udemy</span>
+          <span class="cert-badge"
+            >Interactive Tableau Dashboards — LinkedIn</span
+          >
+          <span class="cert-badge">Tableau for Data Scientists — LinkedIn</span>
+          <span class="cert-badge">SQL Bootcamp — Udemy</span>
+          <span class="cert-badge">Advanced Excel Formulas — LinkedIn</span>
+          <span class="cert-badge"
+            >Managing Project Stakeholders — LinkedIn</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="reveal">
+      <div class="section-label">// 06 — Contact</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="contact-card">
+        <p
+          style="
+            color: var(--text2);
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+          "
+        >
+          Open to senior analytics & IC roles in
+          <strong style="color: var(--text)">Pune or Mumbai</strong>. Let's talk
+          about how data can drive your business forward.
+        </p>
+        <div class="contact-links" style="position: relative; z-index: 1">
+          <a href="mailto:sayali.gengaje@gmail.com" class="contact-link">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+              />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            sayali.gengaje@gmail.com
+          </a>
+          <a href="tel:+919730100198" class="contact-link">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            +91 97301 00198
+          </a>
+          <a
+            href="https://linkedin.com/in/sayali-gengaje"
+            target="_blank"
+            class="contact-link"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+              />
+              <rect x="2" y="9" width="4" height="12" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+            LinkedIn Profile
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        Designed & built for Sayali Gengaje &nbsp;·&nbsp; Pune, Maharashtra
+        &nbsp;·&nbsp; 2025
+      </p>
+    </footer>
+
+    <script>
+      /* ── Theme Toggle ─────────────────────────────────── */
+      const html = document.documentElement;
+      const toggles = document.querySelectorAll(
+        "#themeToggle, #themeToggleMobile",
+      );
+      toggles.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+        }),
+      );
+
+      /* ── Mobile Menu ──────────────────────────────────── */
+      const menuBtn = document.getElementById("menuBtn");
+      const navLinks = document.getElementById("navLinks");
+      menuBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
+        menuBtn.classList.toggle("open");
+      });
+      navLinks.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          menuBtn.classList.remove("open");
+        }),
+      );
+
+      /* Show mobile theme toggle */
+      const mobileToggle = document.getElementById("themeToggleMobile");
+      if (window.innerWidth <= 900) mobileToggle.style.display = "block";
+      window.addEventListener("resize", () => {
+        mobileToggle.style.display =
+          window.innerWidth <= 900 ? "block" : "none";
+      });
+
+      /* ── Scroll Reveal ────────────────────────────────── */
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              e.target.style.transitionDelay = i * 0.05 + "s";
+              e.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+
+      /* ── Metric bars scroll trigger ───────────────────── */
+      const metricObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.querySelectorAll(".metric-bar-fill").forEach((bar) => {
+                bar.style.transform = "scaleX(1)";
+              });
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document
+        .querySelectorAll("#metrics")
+        .forEach((el) => metricObserver.observe(el));
+
+      /* ── Count-Up Animation ───────────────────────────── */
+      function animateCount(el, target, suffix) {
+        let start = 0;
+        const duration = 1500;
+        const step = (timestamp) => {
+          if (!start) start = timestamp;
+          const progress = Math.min((timestamp - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(step);
+          else el.textContent = target;
+        };
+        requestAnimationFrame(step);
+      }
+
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.querySelectorAll(".count-up").forEach((el) => {
+                animateCount(el, parseInt(el.dataset.target));
+              });
+              /* hero stats */
+              e.target.querySelectorAll("[data-count]").forEach((el) => {
+                animateCount(el, parseInt(el.dataset.count));
+              });
+              counterObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document
+        .querySelectorAll("#hero, #metrics")
+        .forEach((el) => counterObserver.observe(el));
+
+      /* ── Navbar Scroll Behavior ───────────────────────── */
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.style.background =
+          window.scrollY > 40
+            ? html.dataset.theme === "dark"
+              ? "rgba(10,10,15,0.95)"
+              : "rgba(245,245,240,0.95)"
+            : "";
+      });
+    </script>
+  </body>
+</html>
